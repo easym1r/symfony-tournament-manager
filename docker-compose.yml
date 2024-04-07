@@ -23,10 +23,11 @@ services:
     volumes:
       - ./:/var/www
     environment:
+      - "DB_USER=user"
+      - "DB_PASSWORD=secret"
+      - "DB_HOSTNAME=mysql"
       - "DB_PORT=3306"
-      - "DB_HOST=mysql"
-      - "REDIS_PORT=6379"
-      - "REDIS_HOST=redis"
+      - "DB_NAME=symfony-tournament-manager"
     links:
       - mysql
 
