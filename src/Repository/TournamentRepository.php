@@ -21,6 +21,40 @@ class TournamentRepository extends ServiceEntityRepository
         parent::__construct($registry, Tournament::class);
     }
 
+    /**
+     * Удаление записи из таблицы
+     *
+     * @param Tournament $tournament - Объект записи из таблицы
+     *
+     * @return void
+     */
+    public function delete(Tournament $tournament): void
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->remove($tournament);
+        $entityManager->flush();
+    }
+
+    /**
+     * Добавление записи в таблицу
+     *
+     * @param string $tournamentName - Название команды, поле 'name' в таблице
+     *
+     * @return int - id зарегистрированного турнира
+     */
+    public function add(string $tournamentName): int
+    {
+        $tournament = new Tournament();
+        $tournament->setName($tournamentName);
+        $tournament->setDateRegistration(new \DateTime()); // FIXME Разобраться почему при указании в БД для этого столбца DEFAULT CURRENT_TIMESTAMP - не работает
+
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($tournament);
+        $entityManager->flush();
+
+        return $tournament->getId();
+    }
+
     //    /**
     //     * @return Tournament[] Returns an array of Tournament objects
     //     */

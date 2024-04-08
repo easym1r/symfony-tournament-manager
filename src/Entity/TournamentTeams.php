@@ -5,24 +5,17 @@ namespace App\Entity;
 use App\Repository\TournamentTeamsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Table(name: "tournament_teams")]
 #[ORM\Entity(repositoryClass: TournamentTeamsRepository::class)]
 class TournamentTeams
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     #[ORM\Column]
     private ?int $tournament_id = null;
 
+    #[ORM\Id]
     #[ORM\Column]
     private ?int $team_id = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getTournamentId(): ?int
     {

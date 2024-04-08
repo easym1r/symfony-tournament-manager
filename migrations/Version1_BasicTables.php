@@ -24,8 +24,8 @@ final class Version1_BasicTables extends AbstractMigration
         $this->addSql('CREATE TABLE teams (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_0900_ai_ci`, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_0900_ai_ci` ENGINE = InnoDB COMMENT = \'\' ');
         $this->addSql('CREATE TABLE tournaments (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_0900_ai_ci`, date_registration TIMESTAMP DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_0900_ai_ci` ENGINE = InnoDB COMMENT = \'\' ');
         $this->addSql('CREATE TABLE tournament_teams (tournament_id INT NOT NULL, team_id INT NOT NULL, INDEX team_id (team_id), INDEX IDX_5794B24133D1A3E7 (tournament_id), PRIMARY KEY(tournament_id, team_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_0900_ai_ci` ENGINE = InnoDB COMMENT = \'\' ');
-        $this->addSql('ALTER TABLE tournament_teams ADD CONSTRAINT tournament_teams_ibfk_1 FOREIGN KEY (tournament_id) REFERENCES tournaments (id) ON UPDATE NO ACTION ON DELETE NO ACTION');
-        $this->addSql('ALTER TABLE tournament_teams ADD CONSTRAINT tournament_teams_ibfk_2 FOREIGN KEY (team_id) REFERENCES teams (id) ON UPDATE NO ACTION ON DELETE NO ACTION');
+        $this->addSql('ALTER TABLE tournament_teams ADD CONSTRAINT tournament_teams_ibfk_1 FOREIGN KEY (tournament_id) REFERENCES tournaments (id) ON UPDATE NO ACTION ON DELETE CASCADE ');
+        $this->addSql('ALTER TABLE tournament_teams ADD CONSTRAINT tournament_teams_ibfk_2 FOREIGN KEY (team_id) REFERENCES teams (id) ON UPDATE NO ACTION ON DELETE CASCADE ');
 
     }
 

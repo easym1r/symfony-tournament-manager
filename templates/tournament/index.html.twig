@@ -9,13 +9,43 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Привет! Перед тобой список всех наших турниров:</h1>
+    <h1 style="text-align: center">Добро пожаловать на проект<br> "Менеджер игровых турниров"</h1>
 
-    <ul>
+    <h3><a href="/teams">Перейти к списку зарегистрированных в проекте команд</a></h3>
+
+    <h3>Список всех наших турниров:</h3>
+    <table style="text-align: center">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Название турнира</th>
+            <th>Дата регистрации</th>
+            <th>Действие</th>
+        </tr>
+        </thead>
+        <tbody>
         {% for tournament in tournaments %}
-{#            <li><a href="{{  path('tournament, {name: tournament.name}') }}">{{ tournament.name }}</a></li>#}
-            <li><a href="/tournament/{{ tournament.name }} ">{{ tournament.name }}</a></li>
+            <tr>
+                <td>{{ tournament.id }}</td>
+                <td>{{ tournament.name }}</td>
+                <td>{{ tournament.dateRegistration|date('Y-m-d H:i') }}</td>
+                <td>
+                    <a href="{{ path('tournament_delete', { 'id': tournament.id }) }}">Удалить запись о турнире</a>
+                </td>
+            </tr>
         {% endfor %}
-    </ul>
+        </tbody>
+    </table>
+
+    <h3>Заполните форму, чтобы зарегистрировать новый турнир:</h3>
+    <form action="{{ path('tournament_registration') }}" method="POST">
+        <label for="tournamentName">Введите название турнира</label>
+        <input type="text" name="tournamentName" placeholder="сюда =)))" required><br>
+        <label for="selectedTeams">Отметьте команды, которые будут учавствовать в турнире (если вы ничего не выберете, это будет означать, что в турнире учавствуют все команды)</label><br>
+            {% for team in teams %}
+                <input type="checkbox" name="selectedTeams[]" value="{{ team.id }}">{{ team.name }}<br>
+            {% endfor %}
+        <button type="submit">Зарегистрировать турнир</button>
+    </form>
 </div>
 {% endblock %}

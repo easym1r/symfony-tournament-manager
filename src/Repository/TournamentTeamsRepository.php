@@ -21,6 +21,29 @@ class TournamentTeamsRepository extends ServiceEntityRepository
         parent::__construct($registry, TournamentTeams::class);
     }
 
+    /**
+     * Добавление записей о связях "турнир-команды" в таблицу
+     *
+     * @param int $tournamentId
+     * @param array $teams
+     *
+     * @return void
+     */
+    public function add(int $tournamentId, array $teams): void
+    {
+        $entityManager = $this->getEntityManager();
+
+        foreach ($teams as $team) {
+            $tournamentTeams = new TournamentTeams();
+            $tournamentTeams->setTournamentId($tournamentId);
+            $tournamentTeams->setTeamId($team);
+
+            $entityManager->persist($tournamentTeams);
+        }
+
+        $entityManager->flush();
+    }
+
     //    /**
     //     * @return TournamentTeams[] Returns an array of TournamentTeams objects
     //     */

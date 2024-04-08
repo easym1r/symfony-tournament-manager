@@ -9,12 +9,37 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Привет! Перед тобой список всех наших команд:</h1>
+    <h1 style="text-align: center">Добро пожаловать на проект<br> "Менеджер игровых турниров"</h1>
 
-    <ul>
+    <h3><a href="{{ path('tournament_list') }}">Перейти к списку зарегистрированных в проекте турниров</a></h3>
+
+    <h3>Список зарегистрированных в проекте команд:</h3>
+    <table style="text-align: center">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Название команды</th>
+            <th>Действие</th>
+        </tr>
+        </thead>
+        <tbody>
         {% for team in teams %}
-            <li><a href="/teams/{{ team.name }} ">{{ team.name }}</a></li>
+            <tr>
+                <td>{{ team.id }}</td>
+                <td>{{ team.name }}</td>
+                <td>
+                    <a href="{{ path('team_delete', { 'id': team.id }) }}">Удалить команду</a>
+                </td>
+            </tr>
         {% endfor %}
-    </ul>
+        </tbody>
+    </table>
+
+    <h3>Заполните форму, чтобы зарегистрировать новую команду:</h3>
+    <form action="{{ path('team_registration') }}" method="POST">
+        <label for="teamName">Введите название команды</label>
+        <input type="text" name="teamName" placeholder="сюда =)))" required>
+        <button type="submit">Добавить</button>
+    </form>
 </div>
 {% endblock %}

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Team;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,6 +20,37 @@ class TeamRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Team::class);
+    }
+
+    /**
+     * Удаление записи из таблицы
+     *
+     * @param Team $team - Объект записи из таблицы
+     *
+     * @return void
+     */
+    public function delete(Team $team): void
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->remove($team);
+        $entityManager->flush();
+    }
+
+    /**
+     * Добавление записи в таблицу
+     *
+     * @param string $teamName - Название команды, поле 'name' в таблице
+     *
+     * @return void
+     */
+    public function add(string $teamName): void
+    {
+        $team = new Team();
+        $team->setName($teamName);
+
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($team);
+        $entityManager->flush();
     }
 
     //    /**
