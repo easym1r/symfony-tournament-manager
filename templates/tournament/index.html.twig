@@ -11,7 +11,7 @@
 <div class="example-wrapper">
     <h1 style="text-align: center">Добро пожаловать на проект<br> "Менеджер игровых турниров"</h1>
 
-    <h3><a href="/teams">Перейти к списку зарегистрированных в проекте команд</a></h3>
+    <h3><a href="{{ path('team_list') }}">Перейти к списку зарегистрированных в проекте команд</a></h3>
 
     <h3>Список всех наших турниров:</h3>
     <table style="text-align: center">
@@ -27,7 +27,7 @@
         {% for tournament in tournaments %}
             <tr>
                 <td>{{ tournament.id }}</td>
-                <td>{{ tournament.name }}</td>
+                <td><a href="{{ path('tournament_detail', { 'name': tournament.name }) }}">{{ tournament.name }}</a></td>
                 <td>{{ tournament.dateRegistration|date('Y-m-d H:i') }}</td>
                 <td>
                     <a href="{{ path('tournament_delete', { 'id': tournament.id }) }}">Удалить запись о турнире</a>

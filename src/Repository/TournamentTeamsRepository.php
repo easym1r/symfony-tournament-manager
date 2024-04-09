@@ -44,6 +44,23 @@ class TournamentTeamsRepository extends ServiceEntityRepository
         $entityManager->flush();
     }
 
+    /**
+     * Поиск всех id команд привязанных к переданному id турнира
+     *
+     * @param int $tournamentId
+     *
+     * @return array
+     */
+    public function findTeamsByTournamentId(int $tournamentId): array
+    {
+        return $this->createQueryBuilder('tt')
+            ->select('tt.team_id')
+            ->andWhere('tt.tournament_id = :tournamentId')
+            ->setParameter('tournamentId', $tournamentId)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return TournamentTeams[] Returns an array of TournamentTeams objects
     //     */

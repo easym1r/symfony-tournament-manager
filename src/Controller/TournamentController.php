@@ -45,9 +45,9 @@ class TournamentController extends AbstractController
      * @return Response
      */
     #[Route('/tournaments/registration', name: 'tournament_registration', methods: ['POST'])]
-    public function add(Request $request,
-                        TournamentRepository $tournamentRepository,
-                        TeamRepository $teamRepository,
+    public function add(Request                   $request,
+                        TournamentRepository      $tournamentRepository,
+                        TeamRepository            $teamRepository,
                         TournamentTeamsRepository $tournamentTeamsRepository): Response
     {
         $tournamentName = $request->request->get('tournamentName');
@@ -102,5 +102,56 @@ class TournamentController extends AbstractController
 
             return $this->redirectToRoute('tournament_list');
         }
+    }
+
+    #[Route('/tournaments/{name}', name: 'tournament_detail', methods: ['GET'])]
+    public function detail(Tournament $tournament, TeamRepository $teamRepository, TournamentTeamsRepository $tournamentTeamsRepository): Response
+    {
+        $teamsIds = $tournamentTeamsRepository->findTeamsByTournamentId($tournament->getId());
+
+        $teams = [];
+        if (!empty($teamsIds)) {
+            $teams = $teamRepository->findById($teamsIds);
+
+            unset($teamsIds);
+        }
+
+        return $this->render('tournament/detail.html.twig', [
+            'title_page' => 'Менеджер турниров. Турнир',
+            'tournament' => $tournament,
+            'teams' => $teams,
+        ]);
+    }
+
+    #[Route('/tournaments/{name}', name: 'tournament_grid_generation', methods: ['POST'])]
+    public function gridGeneration(Tournament $tournament, TeamRepository $teamRepository, TournamentTeamsRepository $tournamentTeamsRepository)
+    {
+        $grid = [];
+        $teams = [];
+
+        $teamsIds = $tournamentTeamsRepository->findTeamsByTournamentId($tournament->getId());
+
+        if (!empty($teamsIds)) {
+            $teamsInfo = $teamRepository->findById($teamsIds);
+
+            unset($teamsIds);
+        }
+
+        foreach ($teamsInfo as $team) {
+            $teams[] = $team->getName();
+        }
+
+        // TODO временно вместо генерации турнирной сетки, генерация всех возможных комбинаций команд.
+        // TODO алгоритм по построению плотной по дням турнирной сетки в разработке
+        // FIXME готовое решение необходимо вынести в отдельную модель
+        $countTeams = count($teams);
+
+        for ($i = 0; $i < $countTeams - 1; $i++) {
+            for ($j = $i + 1; $j < $countTeams; $j++) {
+                $pairs[] = [$teams[$i], $teams[$j]];
+            }
+        }
+
+        return dd($pairs);
     }
 }

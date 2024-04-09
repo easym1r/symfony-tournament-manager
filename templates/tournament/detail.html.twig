@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ title_page }} {% endblock %}
+
+{% block body %}
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+
+    <div class="example-wrapper">
+        <h1 style="text-align: center">Добро пожаловать на проект<br> "Менеджер игровых турниров"</h1>
+
+        <h3><a href="{{ path('tournament_list') }}">Перейти к списку зарегистрированных в проекте турниров</a></h3>
+        <h3><a href="{{ path('team_list') }}">Перейти к списку зарегистрированных в проекте команд</a></h3>
+
+        <h2 style="text-align: center">Подробная информация о матче - "{{ tournament.name }}"</h2>
+
+        <h3>Дата регистрации: {{ tournament.dateRegistration|date('Y-m-d H:i') }}</h3>
+
+        <h3>Список команд-участников:</h3>
+        <ul>
+            {% if teams is empty %}
+                <li>Пока что ни одно команда не зарегистрирована на данный турнир :(</li>
+            {% else %}
+                {% for team in teams %}
+                    <li>{{ team.name }}</li>
+                {% endfor %}
+            {% endif %}
+        </ul>
+
+        <h3>Турнирная сетка:</h3>
+
+        <form action="{{ path('tournament_grid_generation', { 'name': tournament.name }) }}" method="POST">
+            <button type="submit">Сгенерировать</button>
+        </form>
+
+    </div>
+{% endblock %}

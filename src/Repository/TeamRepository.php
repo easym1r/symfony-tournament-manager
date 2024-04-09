@@ -53,6 +53,22 @@ class TeamRepository extends ServiceEntityRepository
         $entityManager->flush();
     }
 
+    /**
+     * Поиск всех записей по столбцу 'id'
+     *
+     * @param array $id
+     *
+     * @return array
+     */
+    public function findById(array $id): array
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.id IN (:id)')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Team[] Returns an array of Team objects
     //     */
